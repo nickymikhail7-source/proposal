@@ -1,4 +1,14 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ProposalSpace MVP
+
+A B2B proposal platform built with:
+- **Next.js 14** (Stable)
+- **React 18**
+- **Tailwind CSS 3**
+- **Prisma 5**
+- **NextAuth.js**
+
+## Deployment
+This project is configured for Vercel deployment.
 
 ## Getting Started
 
