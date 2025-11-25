@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  companyName   String?
+  createdAt     DateTime  @default(now())
+  proposals     Proposal[]
+}
+
+model Proposal {
+  id            String    @id @default(cuid())
+  userId        String
+  title         String
+  clientCompany String
+  clientName    String?
+  clientEmail   String?
+  status        String    @default("DRAFT") // DRAFT, SENT, VIEWED, CLOSED
+  shareId       String    @unique @default(cuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User      @relation(fields: [userId], references: [id])
+  sections      ProposalSection[]
+  views         ProposalView[]
+  comments      Comment[]
+}
+
+model ProposalSection {
+  id          String   @id @default(cuid())
+  proposalId  String
+  type        String   // OVERVIEW, PROBLEM, PRICING, etc.
+  title       String
+  content     String   // HTML/JSON from Rich Text
+  order       Int
+  proposal    Proposal @relation(fields: [proposalId], references: [id])
+}
+
+model ProposalView {
+  id          String   @id @default(cuid())
+  proposalId  String
+  viewedAt    DateTime @default(now())
+  ipAddress   String?
+  userAgent   String?
+  proposal    Proposal @relation(fields: [proposalId], references: [id])
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  proposalId  String
+  sectionId   String?
+  authorType  String   // VENDOR, CLIENT
+  content     String
+  createdAt   DateTime @default(now())
+  resolved    Boolean  @default(false)
+  proposal    Proposal @relation(fields: [proposalId], references: [id])
+}
