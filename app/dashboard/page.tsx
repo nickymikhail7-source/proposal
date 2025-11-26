@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { Plus, FileText, Eye, MessageSquare } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
+import { CopyLinkButton } from "@/components/copy-link-button"
 
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions)
@@ -77,16 +78,19 @@ export default async function DashboardPage() {
                                     <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600">
                                         {proposal.title}
                                     </h3>
-                                    <span
-                                        className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${proposal.status === "DRAFT"
+                                    <div className="flex items-center gap-2">
+                                        <CopyLinkButton shareId={proposal.shareId} />
+                                        <span
+                                            className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${proposal.status === "DRAFT"
                                                 ? "bg-gray-50 text-gray-600 ring-gray-500/10"
                                                 : proposal.status === "SENT"
                                                     ? "bg-blue-50 text-blue-700 ring-blue-700/10"
                                                     : "bg-green-50 text-green-700 ring-green-600/20"
-                                            }`}
-                                    >
-                                        {proposal.status}
-                                    </span>
+                                                }`}
+                                        >
+                                            {proposal.status}
+                                        </span>
+                                    </div>
                                 </div>
                                 <p className="mt-2 text-sm text-gray-500">
                                     {proposal.clientCompany}
