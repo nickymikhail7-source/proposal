@@ -21,7 +21,7 @@ export default async function DashboardLayout({
                 <div className="container flex h-16 items-center justify-between py-4 px-4 sm:px-6 lg:px-8">
                     <div className="flex gap-6 md:gap-10">
                         <a href="/dashboard" className="flex items-center space-x-2">
-                            <span className="inline-block font-bold">ProposalSpace</span>
+                            <span className="inline-block font-bold text-gray-900">ProposalSpace</span>
                         </a>
                         <DashboardNav />
                     </div>
