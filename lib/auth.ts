@@ -44,7 +44,8 @@ export const authOptions: NextAuthOptions = {
                 return {
                     id: user.id,
                     email: user.email,
-                    name: user.companyName,
+                    name: user.name,
+                    companyName: user.companyName,
                 }
             },
         }),
@@ -53,13 +54,24 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }) {
             if (token && session.user) {
                 session.user.id = token.id as string
+                session.user.companyName = token.companyName as string | null
+                session.user.name = token.name as string | null
             }
             return session
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
             if (user) {
                 token.id = user.id
+                token.companyName = user.companyName
+                token.name = user.name
             }
+
+            // Handle session update
+            if (trigger === "update" && session) {
+                token.name = session.user.name
+                token.companyName = session.user.companyName
+            }
+
             return token
         },
     },
