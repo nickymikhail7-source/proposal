@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { Package } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function DashboardNav() {
@@ -11,6 +12,10 @@ export function DashboardNav() {
         {
             title: "Proposals",
             href: "/dashboard",
+        },
+        {
+            title: "Products",
+            href: "/dashboard/products",
         },
         {
             title: "Settings",

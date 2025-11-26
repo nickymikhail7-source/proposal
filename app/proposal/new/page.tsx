@@ -8,6 +8,17 @@ import { ArrowLeft } from "lucide-react"
 export default function NewProposalPage() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
+    const [products, setProducts] = useState<any[]>([])
+    const [selectedProductId, setSelectedProductId] = useState<string>("")
+
+    useState(() => {
+        fetch("/api/products")
+            .then((res) => res.json())
+            .then((data) => {
+                if (Array.isArray(data)) setProducts(data)
+            })
+            .catch(console.error)
+    })
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -25,7 +36,13 @@ export default function NewProposalPage() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ title, clientCompany, heading, subject }),
+                body: JSON.stringify({
+                    title,
+                    clientCompany,
+                    heading,
+                    subject,
+                    productId: selectedProductId || undefined
+                }),
             })
 
             if (!res.ok) throw new Error("Failed to create proposal")
@@ -120,6 +137,33 @@ export default function NewProposalPage() {
                                 placeholder="e.g. Re: Q4 Marketing Initiatives"
                             />
                         </div>
+
+                        {products.length > 0 && (
+                            <div>
+                                <label
+                                    htmlFor="product"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Select Product (Optional)
+                                </label>
+                                <p className="text-xs text-gray-500 mb-2">
+                                    Select a product to auto-populate the pricing section.
+                                </p>
+                                <select
+                                    id="product"
+                                    value={selectedProductId}
+                                    onChange={(e) => setSelectedProductId(e.target.value)}
+                                    className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">No product (Manual pricing)</option>
+                                    {products.map((product) => (
+                                        <option key={product.id} value={product.id}>
+                                            {product.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
 
                         <div className="flex justify-end pt-4">
                             <button
