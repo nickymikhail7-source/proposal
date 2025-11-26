@@ -28,6 +28,10 @@ interface Proposal {
 export function EditorClient({ proposal }: { proposal: Proposal }) {
     const router = useRouter()
     const [sections, setSections] = useState(proposal.sections)
+    const [title, setTitle] = useState(proposal.title)
+    const [clientCompany, setClientCompany] = useState(proposal.clientCompany)
+    const [heading, setHeading] = useState(proposal.heading || "")
+    const [subject, setSubject] = useState(proposal.subject || "")
     const [saving, setSaving] = useState(false)
     const [lastSaved, setLastSaved] = useState<Date | null>(null)
 
@@ -45,7 +49,13 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ sections }),
+                body: JSON.stringify({
+                    title,
+                    clientCompany,
+                    heading,
+                    subject,
+                    sections
+                }),
             })
 
             if (!res.ok) throw new Error("Failed to save")
@@ -104,39 +114,56 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
         <div className="min-h-screen bg-gray-50 pb-20">
             {/* Header */}
             <header className="sticky top-0 z-30 border-b bg-white shadow-sm">
-                <div className="container mx-auto flex h-16 items-center justify-between px-4">
-                    <div className="flex items-center gap-4">
+                <div className="container mx-auto flex h-auto py-4 items-start justify-between px-4">
+                    <div className="flex items-start gap-4 w-full max-w-2xl">
                         <Link
                             href="/dashboard"
-                            className="text-gray-500 hover:text-gray-900"
+                            className="text-gray-500 hover:text-gray-900 mt-1"
                         >
                             <ArrowLeft className="h-5 w-5" />
                         </Link>
-                        <div>
+                        <div className="flex-1 space-y-3">
+                            {/* Title */}
                             <input
                                 type="text"
-                                value={proposal.title}
-                                onChange={(e) => {
-                                    // Handle title change (would need to update state/proposal object)
-                                    // For MVP, we might just display it or allow simple edit
-                                    // Ideally we should update the proposal state
-                                }}
-                                className="text-lg font-bold text-gray-900 border-none focus:ring-0 p-0"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="block w-full text-xl font-bold text-gray-900 border-none focus:ring-0 p-0 placeholder:text-gray-300"
+                                placeholder="Proposal Title"
                             />
-                            <div className="flex gap-2 mt-1">
-                                <input
-                                    type="text"
-                                    value={proposal.clientCompany}
-                                    className="text-xs text-gray-500 border-none focus:ring-0 p-0 w-32"
-                                    placeholder="Client Company"
-                                />
-                                <span className="text-xs text-gray-300">|</span>
-                                <input
-                                    type="text"
-                                    value={proposal.heading || ""}
-                                    className="text-xs text-gray-500 border-none focus:ring-0 p-0 w-40"
-                                    placeholder="Heading (Optional)"
-                                />
+
+                            {/* Metadata Grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Client</label>
+                                    <input
+                                        type="text"
+                                        value={clientCompany}
+                                        onChange={(e) => setClientCompany(e.target.value)}
+                                        className="block w-full text-sm text-gray-700 border border-gray-200 rounded-md px-2 py-1 focus:border-indigo-500 focus:ring-indigo-500"
+                                        placeholder="Client Company"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Heading (Optional)</label>
+                                    <input
+                                        type="text"
+                                        value={heading}
+                                        onChange={(e) => setHeading(e.target.value)}
+                                        className="block w-full text-sm text-gray-700 border border-gray-200 rounded-md px-2 py-1 focus:border-indigo-500 focus:ring-indigo-500"
+                                        placeholder="e.g. Strategic Partnership"
+                                    />
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Subject Line (Optional)</label>
+                                    <input
+                                        type="text"
+                                        value={subject}
+                                        onChange={(e) => setSubject(e.target.value)}
+                                        className="block w-full text-sm text-gray-700 border border-gray-200 rounded-md px-2 py-1 focus:border-indigo-500 focus:ring-indigo-500"
+                                        placeholder="e.g. Re: Q4 Marketing Initiatives - Draft for Review"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
