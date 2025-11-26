@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { analyzePricingContent } from '@/lib/anthropic';
-import pdf from 'pdf-parse';
+// @ts-ignore
+const pdf = require('pdf-parse');
 import mammoth from 'mammoth';
 import * as XLSX from 'xlsx';
 
