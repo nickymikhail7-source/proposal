@@ -67,12 +67,22 @@ export default async function PublicProposalPage({
             {/* Hero */}
             <div className="bg-gray-50 py-16 sm:py-24">
                 <div className="container mx-auto px-4 text-center">
+                    {proposal.heading && (
+                        <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600 mb-2">
+                            {proposal.heading}
+                        </p>
+                    )}
                     <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
                         {proposal.title}
                     </h1>
                     <p className="mt-4 text-lg text-gray-600">
                         Prepared for {proposal.clientCompany}
                     </p>
+                    {proposal.subject && (
+                        <p className="mt-2 text-md text-gray-500 italic">
+                            Subject: {proposal.subject}
+                        </p>
+                    )}
                 </div>
             </div>
 

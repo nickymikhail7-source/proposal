@@ -16,6 +16,8 @@ export default function NewProposalPage() {
         const formData = new FormData(e.currentTarget)
         const title = formData.get("title")
         const clientCompany = formData.get("clientCompany")
+        const heading = formData.get("heading")
+        const subject = formData.get("subject")
 
         try {
             const res = await fetch("/api/proposals", {
@@ -23,7 +25,7 @@ export default function NewProposalPage() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ title, clientCompany }),
+                body: JSON.stringify({ title, clientCompany, heading, subject }),
             })
 
             if (!res.ok) throw new Error("Failed to create proposal")
@@ -84,6 +86,38 @@ export default function NewProposalPage() {
                                 required
                                 className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                 placeholder="e.g. Acme Corp"
+                            />
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="heading"
+                                className="block text-sm font-medium text-gray-700"
+                            >
+                                Proposal Heading (Optional)
+                            </label>
+                            <input
+                                type="text"
+                                name="heading"
+                                id="heading"
+                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                placeholder="e.g. Strategic Partnership Proposal"
+                            />
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="subject"
+                                className="block text-sm font-medium text-gray-700"
+                            >
+                                Subject Line (Optional)
+                            </label>
+                            <input
+                                type="text"
+                                name="subject"
+                                id="subject"
+                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                placeholder="e.g. Re: Q4 Marketing Initiatives"
                             />
                         </div>
 

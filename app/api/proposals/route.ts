@@ -11,13 +11,15 @@ export async function POST(req: Request) {
     }
 
     try {
-        const { title, clientCompany } = await req.json()
+        const { title, clientCompany, heading, subject } = await req.json()
 
         const proposal = await prisma.proposal.create({
             data: {
                 userId: session.user.id,
                 title,
                 clientCompany,
+                heading,
+                subject,
                 sections: {
                     create: [
                         {

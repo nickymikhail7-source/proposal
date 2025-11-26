@@ -54,6 +54,12 @@ export async function PATCH(
         if (body.clientEmail !== undefined) {
             updateData.clientEmail = body.clientEmail
         }
+        if (body.heading !== undefined) {
+            updateData.heading = body.heading
+        }
+        if (body.subject !== undefined) {
+            updateData.subject = body.subject
+        }
 
         await prisma.proposal.update({
             where: { id },

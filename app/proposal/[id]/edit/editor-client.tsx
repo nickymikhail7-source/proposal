@@ -17,6 +17,8 @@ interface Proposal {
     id: string
     title: string
     clientCompany: string
+    heading?: string | null
+    subject?: string | null
     clientEmail: string | null
     status: string
     shareId: string
@@ -111,10 +113,31 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
                             <ArrowLeft className="h-5 w-5" />
                         </Link>
                         <div>
-                            <h1 className="text-lg font-bold text-gray-900">
-                                {proposal.title}
-                            </h1>
-                            <p className="text-xs text-gray-500">{proposal.clientCompany}</p>
+                            <input
+                                type="text"
+                                value={proposal.title}
+                                onChange={(e) => {
+                                    // Handle title change (would need to update state/proposal object)
+                                    // For MVP, we might just display it or allow simple edit
+                                    // Ideally we should update the proposal state
+                                }}
+                                className="text-lg font-bold text-gray-900 border-none focus:ring-0 p-0"
+                            />
+                            <div className="flex gap-2 mt-1">
+                                <input
+                                    type="text"
+                                    value={proposal.clientCompany}
+                                    className="text-xs text-gray-500 border-none focus:ring-0 p-0 w-32"
+                                    placeholder="Client Company"
+                                />
+                                <span className="text-xs text-gray-300">|</span>
+                                <input
+                                    type="text"
+                                    value={proposal.heading || ""}
+                                    className="text-xs text-gray-500 border-none focus:ring-0 p-0 w-40"
+                                    placeholder="Heading (Optional)"
+                                />
+                            </div>
                         </div>
                     </div>
 
