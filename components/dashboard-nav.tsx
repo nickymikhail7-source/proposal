@@ -25,8 +25,8 @@ export function DashboardNav() {
                     key={index}
                     href={item.href}
                     className={cn(
-                        "flex items-center text-sm font-medium text-muted-foreground",
-                        item.href === pathname && "text-foreground font-bold"
+                        "flex items-center text-sm font-medium text-gray-600 hover:text-gray-900",
+                        item.href === pathname && "text-gray-900 font-bold"
                     )}
                 >
                     {item.title}
