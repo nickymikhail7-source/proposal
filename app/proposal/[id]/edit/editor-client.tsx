@@ -56,6 +56,36 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
         }
     }
 
+    const handlePublish = async () => {
+        // First save any pending changes
+        await saveProposal()
+
+        setSaving(true)
+        try {
+            // Update status to SENT
+            const res = await fetch(`/api/proposals/${proposal.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ status: "SENT" }),
+            })
+
+            if (!res.ok) throw new Error("Failed to publish")
+
+            // Copy link to clipboard
+            const url = `${window.location.origin}/p/${proposal.shareId}`
+            await navigator.clipboard.writeText(url)
+
+            alert("Proposal published! Link copied to clipboard:\n" + url)
+        } catch (error) {
+            console.error("Failed to publish", error)
+            alert("Failed to publish proposal")
+        } finally {
+            setSaving(false)
+        }
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
             {/* Header */}
@@ -99,7 +129,9 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
                             Preview
                         </Link>
                         <button
-                            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            onClick={handlePublish}
+                            disabled={saving}
+                            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
                         >
                             <Send className="mr-2 h-4 w-4" />
                             Publish & Send
