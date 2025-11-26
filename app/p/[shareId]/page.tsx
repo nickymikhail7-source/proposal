@@ -10,9 +10,9 @@ import { CommentsSection } from "@/components/comments/comments-section"
 export default async function PublicProposalPage({
     params,
 }: {
-    params: Promise<{ shareId: string }>
+    params: { shareId: string }
 }) {
-    const { shareId } = await params
+    const { shareId } = params
     const proposal = await prisma.proposal.findUnique({
         where: {
             shareId,

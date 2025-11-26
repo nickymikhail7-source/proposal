@@ -9,10 +9,10 @@ import { formatDistanceToNow } from "date-fns"
 export default async function AnalyticsPage({
     params,
 }: {
-    params: Promise<{ id: string }>
+    params: { id: string }
 }) {
     const session = await getServerSession(authOptions)
-    const { id } = await params
+    const { id } = params
 
     if (!session?.user?.id) {
         redirect("/login")

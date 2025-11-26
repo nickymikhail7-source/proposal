@@ -7,10 +7,10 @@ import { EditorClient } from "./editor-client"
 export default async function ProposalEditPage({
     params,
 }: {
-    params: Promise<{ id: string }>
+    params: { id: string }
 }) {
     const session = await getServerSession(authOptions)
-    const { id } = await params
+    const { id } = params
 
     if (!session?.user?.id) {
         redirect("/login")
