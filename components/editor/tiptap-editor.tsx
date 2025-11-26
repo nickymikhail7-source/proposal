@@ -19,7 +19,7 @@ import {
 
 interface EditorProps {
     content: string
-    onChange: (content: string) => void
+    onChange?: (content: string) => void
     editable?: boolean
 }
 
@@ -35,7 +35,7 @@ export function Editor({ content, onChange, editable = true }: EditorProps) {
         content,
         editable,
         onUpdate: ({ editor }) => {
-            onChange(editor.getHTML())
+            onChange?.(editor.getHTML())
         },
         editorProps: {
             attributes: {

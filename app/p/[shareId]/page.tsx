@@ -87,7 +87,7 @@ export default async function PublicProposalPage({
                                 </h2>
                             </div>
                             <div className="prose prose-lg max-w-none text-gray-600">
-                                <Editor content={section.content} onChange={() => { }} editable={false} />
+                                <Editor content={section.content} editable={false} />
                             </div>
                             <CommentsSection
                                 proposalId={proposal.id}
