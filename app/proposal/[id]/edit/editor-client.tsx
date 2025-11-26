@@ -17,6 +17,7 @@ interface Proposal {
     id: string
     title: string
     clientCompany: string
+    clientEmail: string | null
     status: string
     shareId: string
     sections: Section[]
@@ -56,19 +57,29 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
         }
     }
 
-    const handlePublish = async () => {
+    const [showPublishDialog, setShowPublishDialog] = useState(false)
+    const [clientEmail, setClientEmail] = useState(proposal.clientEmail || "")
+
+    const handlePublishClick = () => {
+        setShowPublishDialog(true)
+    }
+
+    const confirmPublish = async () => {
         // First save any pending changes
         await saveProposal()
 
         setSaving(true)
         try {
-            // Update status to SENT
+            // Update status to SENT and save client email
             const res = await fetch(`/api/proposals/${proposal.id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ status: "SENT" }),
+                body: JSON.stringify({
+                    status: "SENT",
+                    clientEmail: clientEmail
+                }),
             })
 
             if (!res.ok) throw new Error("Failed to publish")
@@ -77,6 +88,7 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
             const url = `${window.location.origin}/p/${proposal.shareId}`
             await navigator.clipboard.writeText(url)
 
+            setShowPublishDialog(false)
             alert("Proposal published! Link copied to clipboard:\n" + url)
         } catch (error) {
             console.error("Failed to publish", error)
@@ -129,7 +141,7 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
                             Preview
                         </Link>
                         <button
-                            onClick={handlePublish}
+                            onClick={handlePublishClick}
                             disabled={saving}
                             className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
                         >
@@ -163,6 +175,47 @@ export function EditorClient({ proposal }: { proposal: Proposal }) {
                     ))}
                 </div>
             </main>
+
+            {/* Publish Dialog */}
+            {showPublishDialog && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+                        <h3 className="text-lg font-bold text-gray-900">Publish Proposal</h3>
+                        <p className="mt-2 text-sm text-gray-500">
+                            Enter the client's email address to track who you are sending this to.
+                        </p>
+
+                        <div className="mt-4">
+                            <label htmlFor="clientEmail" className="block text-sm font-medium text-gray-700">
+                                Client Email
+                            </label>
+                            <input
+                                type="email"
+                                id="clientEmail"
+                                value={clientEmail}
+                                onChange={(e) => setClientEmail(e.target.value)}
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm text-gray-900"
+                                placeholder="client@company.com"
+                            />
+                        </div>
+
+                        <div className="mt-6 flex justify-end gap-3">
+                            <button
+                                onClick={() => setShowPublishDialog(false)}
+                                className="rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmPublish}
+                                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+                            >
+                                Confirm & Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

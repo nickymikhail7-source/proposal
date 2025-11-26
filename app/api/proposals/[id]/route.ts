@@ -46,10 +46,13 @@ export async function PATCH(
             )
         }
 
-        // Update proposal fields (status, timestamp)
+        // Update proposal fields (status, timestamp, clientEmail)
         const updateData: any = { updatedAt: new Date() }
         if (status) {
             updateData.status = status
+        }
+        if (body.clientEmail !== undefined) {
+            updateData.clientEmail = body.clientEmail
         }
 
         await prisma.proposal.update({

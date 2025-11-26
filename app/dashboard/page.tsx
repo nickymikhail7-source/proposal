@@ -66,52 +66,76 @@ export default async function DashboardPage() {
                     </Link>
                 </div>
             ) : (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {proposals.map((proposal) => (
-                        <Link
+                        <div
                             key={proposal.id}
-                            href={`/proposal/${proposal.id}/edit`}
-                            className="group relative flex flex-col justify-between rounded-lg border bg-white p-6 shadow-sm transition-all hover:shadow-md"
+                            className="group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-indigo-200"
                         >
                             <div>
-                                <div className="flex items-center justify-between">
-                                    <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600">
-                                        {proposal.title}
-                                    </h3>
-                                    <div className="flex items-center gap-2">
+                                <div className="flex items-start justify-between">
+                                    <div className="space-y-1">
+                                        <h3 className="font-bold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors">
+                                            {proposal.title}
+                                        </h3>
+                                        <p className="text-sm font-medium text-gray-500">
+                                            {proposal.clientCompany}
+                                        </p>
+                                    </div>
+                                    <span
+                                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold ring-1 ring-inset ${proposal.status === "DRAFT"
+                                            ? "bg-gray-100 text-gray-700 ring-gray-600/20"
+                                            : proposal.status === "SENT"
+                                                ? "bg-blue-50 text-blue-700 ring-blue-700/10"
+                                                : "bg-green-50 text-green-700 ring-green-600/20"
+                                            }`}
+                                    >
+                                        {proposal.status}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="mt-6 space-y-4">
+                                {/* Analytics Preview */}
+                                <div className="flex items-center justify-between border-t border-gray-100 pt-4">
+                                    <div className="flex gap-6">
+                                        <div className="flex items-center gap-2 text-sm text-gray-600" title="Total Views">
+                                            <Eye className="h-4 w-4 text-gray-400" />
+                                            <span className="font-semibold">{proposal._count.views}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-sm text-gray-600" title="Comments">
+                                            <MessageSquare className="h-4 w-4 text-gray-400" />
+                                            <span className="font-semibold">{proposal._count.comments}</span>
+                                        </div>
+                                    </div>
+                                    <span className="text-xs text-gray-400">
+                                        {formatDistanceToNow(proposal.updatedAt)} ago
+                                    </span>
+                                </div>
+
+                                {/* Actions */}
+                                <div className="grid grid-cols-2 gap-3 pt-2">
+                                    <Link
+                                        href={`/proposal/${proposal.id}/edit`}
+                                        className="inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                                    >
+                                        Edit
+                                    </Link>
+                                    <Link
+                                        href={`/proposal/${proposal.id}/analytics`}
+                                        className="inline-flex items-center justify-center rounded-lg bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-100 transition-colors"
+                                    >
+                                        Analytics
+                                    </Link>
+                                </div>
+                                <div className="flex justify-center pt-2 border-t border-gray-50">
+                                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                                        <span>Copy Link:</span>
                                         <CopyLinkButton shareId={proposal.shareId} />
-                                        <span
-                                            className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${proposal.status === "DRAFT"
-                                                ? "bg-gray-50 text-gray-600 ring-gray-500/10"
-                                                : proposal.status === "SENT"
-                                                    ? "bg-blue-50 text-blue-700 ring-blue-700/10"
-                                                    : "bg-green-50 text-green-700 ring-green-600/20"
-                                                }`}
-                                        >
-                                            {proposal.status}
-                                        </span>
                                     </div>
                                 </div>
-                                <p className="mt-2 text-sm text-gray-500">
-                                    {proposal.clientCompany}
-                                </p>
                             </div>
-                            <div className="mt-4 flex items-center justify-between border-t pt-4 text-xs text-gray-500">
-                                <div className="flex gap-4">
-                                    <div className="flex items-center gap-1">
-                                        <Eye className="h-3 w-3" />
-                                        {proposal._count.views}
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <MessageSquare className="h-3 w-3" />
-                                        {proposal._count.comments}
-                                    </div>
-                                </div>
-                                <span>
-                                    Updated {formatDistanceToNow(proposal.updatedAt)} ago
-                                </span>
-                            </div>
-                        </Link>
+                        </div>
                     ))}
                 </div>
             )}
