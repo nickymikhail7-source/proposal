@@ -165,8 +165,8 @@ export default function NewProductPage() {
                             <button
                                 onClick={() => setSourceType("url")}
                                 className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all ${sourceType === "url"
-                                        ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                                        : "border-gray-200 hover:border-gray-300 text-gray-600"
+                                    ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                                    : "border-gray-200 hover:border-gray-300 text-gray-600"
                                     }`}
                             >
                                 <LinkIcon className="h-6 w-6 mb-2" />
@@ -175,8 +175,8 @@ export default function NewProductPage() {
                             <button
                                 onClick={() => setSourceType("document")}
                                 className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all ${sourceType === "document"
-                                        ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                                        : "border-gray-200 hover:border-gray-300 text-gray-600"
+                                    ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                                    : "border-gray-200 hover:border-gray-300 text-gray-600"
                                     }`}
                             >
                                 <FileText className="h-6 w-6 mb-2" />
@@ -196,7 +196,7 @@ export default function NewProductPage() {
                                     type="text"
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value.replace(/^https?:\/\//, ""))}
-                                    className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900"
                                     placeholder="example.com/pricing"
                                 />
                             </div>
