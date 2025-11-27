@@ -28,6 +28,7 @@ export default function NewProposalPage() {
             console.log('Selected product:', product)
             console.log('Pricing data:', product?.pricingData)
             console.log('Tiers:', product?.pricingData?.tiers)
+            alert(`Product selected: ${product?.name}\nHas tiers: ${!!product?.pricingData?.tiers}\nTier count: ${product?.pricingData?.tiers?.length || 0}`)
             setSelectedProduct(product)
             setSelectedTierId("") // Reset tier selection when product changes
         } else {
