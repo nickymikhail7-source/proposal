@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 
 export const anthropic = new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 export const PRICING_ANALYSIS_PROMPT = `You are an expert pricing analyst. Your task is to analyze pricing page content and extract ALL pricing information into a precise, structured format.
@@ -69,13 +69,13 @@ RULES:
 - Return ONLY the JSON object, no markdown formatting, no explanations`;
 
 export async function analyzePricingContent(content: string): Promise<any> {
-    const message = await anthropic.messages.create({
-        model: "claude-3-5-sonnet-20240620", // Using latest available Sonnet model
-        max_tokens: 4096,
-        messages: [
-            {
-                role: "user",
-                content: `${PRICING_ANALYSIS_PROMPT}
+  const message = await anthropic.messages.create({
+    model: "claude-3-5-sonnet-20241022", // Using latest available Sonnet model
+    max_tokens: 4096,
+    messages: [
+      {
+        role: "user",
+        content: `${PRICING_ANALYSIS_PROMPT}
 
 PRICING CONTENT TO ANALYZE:
 ---
@@ -83,52 +83,52 @@ ${content}
 ---
 
 Return the JSON object:`
-            }
-        ]
-    });
+      }
+    ]
+  });
 
-    const responseText = message.content[0].type === 'text'
-        ? message.content[0].text
-        : '';
+  const responseText = message.content[0].type === 'text'
+    ? message.content[0].text
+    : '';
 
-    // Parse JSON response
-    let pricingData;
-    try {
-        // Try direct parse first
-        pricingData = JSON.parse(responseText);
-    } catch (e) {
-        // Extract JSON if wrapped in markdown code blocks
-        const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
-        if (jsonMatch) {
-            pricingData = JSON.parse(jsonMatch[1].trim());
-        } else {
-            // Try to find JSON object pattern
-            const objectMatch = responseText.match(/\{[\s\S]*\}/);
-            if (objectMatch) {
-                pricingData = JSON.parse(objectMatch[0]);
-            } else {
-                throw new Error('Failed to extract pricing data from AI response');
-            }
-        }
+  // Parse JSON response
+  let pricingData;
+  try {
+    // Try direct parse first
+    pricingData = JSON.parse(responseText);
+  } catch (e) {
+    // Extract JSON if wrapped in markdown code blocks
+    const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (jsonMatch) {
+      pricingData = JSON.parse(jsonMatch[1].trim());
+    } else {
+      // Try to find JSON object pattern
+      const objectMatch = responseText.match(/\{[\s\S]*\}/);
+      if (objectMatch) {
+        pricingData = JSON.parse(objectMatch[0]);
+      } else {
+        throw new Error('Failed to extract pricing data from AI response');
+      }
     }
+  }
 
-    // Validate and add missing fields
-    pricingData.tiers = pricingData.tiers || [];
-    pricingData.addons = pricingData.addons || [];
-    pricingData.usageBasedPricing = pricingData.usageBasedPricing || [];
-    pricingData.currency = pricingData.currency || 'USD';
+  // Validate and add missing fields
+  pricingData.tiers = pricingData.tiers || [];
+  pricingData.addons = pricingData.addons || [];
+  pricingData.usageBasedPricing = pricingData.usageBasedPricing || [];
+  pricingData.currency = pricingData.currency || 'USD';
 
-    // Ensure all tiers have IDs
-    pricingData.tiers = pricingData.tiers.map((tier: any, index: number) => ({
-        ...tier,
-        id: tier.id || `tier_${index + 1}`
-    }));
+  // Ensure all tiers have IDs
+  pricingData.tiers = pricingData.tiers.map((tier: any, index: number) => ({
+    ...tier,
+    id: tier.id || `tier_${index + 1}`
+  }));
 
-    // Ensure all addons have IDs
-    pricingData.addons = pricingData.addons.map((addon: any, index: number) => ({
-        ...addon,
-        id: addon.id || `addon_${index + 1}`
-    }));
+  // Ensure all addons have IDs
+  pricingData.addons = pricingData.addons.map((addon: any, index: number) => ({
+    ...addon,
+    id: addon.id || `addon_${index + 1}`
+  }));
 
-    return pricingData;
+  return pricingData;
 }
