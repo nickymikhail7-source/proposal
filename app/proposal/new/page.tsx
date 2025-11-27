@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
@@ -11,14 +11,14 @@ export default function NewProposalPage() {
     const [products, setProducts] = useState<any[]>([])
     const [selectedProductId, setSelectedProductId] = useState<string>("")
 
-    useState(() => {
+    useEffect(() => {
         fetch("/api/products")
             .then((res) => res.json())
             .then((data) => {
                 if (Array.isArray(data)) setProducts(data)
             })
             .catch(console.error)
-    })
+    }, [])
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
