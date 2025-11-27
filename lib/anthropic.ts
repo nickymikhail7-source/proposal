@@ -70,7 +70,7 @@ RULES:
 
 export async function analyzePricingContent(content: string): Promise<any> {
   const message = await anthropic.messages.create({
-    model: "claude-3-5-sonnet-20241022", // Using latest available Sonnet model
+    model: "claude-3-opus-20240229", // Using stable Claude 3 Opus model
     max_tokens: 4096,
     messages: [
       {
