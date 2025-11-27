@@ -78,7 +78,7 @@ export default function NewProductPage() {
                 res = await fetch("/api/products/analyze-url", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ url }),
+                    body: JSON.stringify({ url: `https://${url}` }),
                 })
             } else {
                 const formData = new FormData()
@@ -154,7 +154,7 @@ export default function NewProductPage() {
                             type="text"
                             value={productName}
                             onChange={(e) => setProductName(e.target.value)}
-                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 bg-white"
                             placeholder="e.g. Acme SaaS"
                         />
                     </div>
