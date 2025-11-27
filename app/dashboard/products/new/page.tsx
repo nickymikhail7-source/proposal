@@ -196,7 +196,7 @@ export default function NewProductPage() {
                                     type="text"
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value.replace(/^https?:\/\//, ""))}
-                                    className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900"
+                                    className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 bg-white"
                                     placeholder="example.com/pricing"
                                 />
                             </div>

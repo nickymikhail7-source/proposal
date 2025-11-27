@@ -167,7 +167,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                                     type="text"
                                     value={tier.name}
                                     onChange={(e) => updateTier(tierIndex, "name", e.target.value)}
-                                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900"
+                                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 bg-white"
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
@@ -177,7 +177,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                                         type="number"
                                         value={tier.price || ""}
                                         onChange={(e) => updateTier(tierIndex, "price", parseFloat(e.target.value))}
-                                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900"
+                                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 bg-white"
                                         placeholder="Custom"
                                     />
                                 </div>
@@ -186,7 +186,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                                     <select
                                         value={tier.priceUnit}
                                         onChange={(e) => updateTier(tierIndex, "priceUnit", e.target.value)}
-                                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900"
+                                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 bg-white"
                                     >
                                         <option value="month">/ month</option>
                                         <option value="year">/ year</option>
