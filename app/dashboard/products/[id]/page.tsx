@@ -152,7 +152,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 bg-white"
                 />
             </div>
 
@@ -203,7 +203,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                                 type="text"
                                 value={tier.description || ""}
                                 onChange={(e) => updateTier(tierIndex, "description", e.target.value)}
-                                className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 bg-white"
                             />
                         </div>
 
@@ -216,7 +216,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                                             type="text"
                                             value={feature}
                                             onChange={(e) => updateFeature(tierIndex, featureIndex, e.target.value)}
-                                            className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 bg-white"
                                         />
                                         <button
                                             onClick={() => removeFeature(tierIndex, featureIndex)}
