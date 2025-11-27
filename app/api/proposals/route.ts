@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     try {
-        const { title, clientCompany, heading, subject, productId } = await req.json()
+        const { title, clientCompany, heading, subject, productId, selectedTierId } = await req.json()
 
         let pricingContent = "<p>Breakdown of costs...</p>"
         let product = null
@@ -26,39 +26,41 @@ export async function POST(req: Request) {
                 const currency = data.currency || "USD"
 
                 let html = `<div class="pricing-section">`
-                html += `<h3>Pricing Options</h3>`
-                html += `<p>Based on your needs, we recommend the following options:</p>`
-                html += `<table style="width: 100%; border-collapse: collapse; margin-top: 20px;">`
-                html += `<thead><tr style="background-color: #f3f4f6;">`
-                html += `<th style="padding: 12px; text-align: left; border: 1px solid #e5e7eb;">Plan</th>`
-                html += `<th style="padding: 12px; text-align: left; border: 1px solid #e5e7eb;">Price</th>`
-                html += `<th style="padding: 12px; text-align: left; border: 1px solid #e5e7eb;">Features</th>`
-                html += `</tr></thead><tbody>`
+                html += `<h3>Pricing</h3>`
 
-                if (Array.isArray(data.tiers)) {
-                    data.tiers.forEach((tier: any) => {
-                        const priceDisplay = tier.price === null
-                            ? "Custom"
-                            : `${currency} ${tier.price} / ${tier.priceUnit}`
+                // Find the selected tier
+                const selectedTier = Array.isArray(data.tiers)
+                    ? data.tiers.find((tier: any) => tier.id === selectedTierId)
+                    : null
 
-                        html += `<tr>`
-                        html += `<td style="padding: 12px; border: 1px solid #e5e7eb;"><strong>${tier.name}</strong>${tier.highlighted ? ' <span style="font-size: 0.8em; color: #d97706;">(Popular)</span>' : ''}</td>`
-                        html += `<td style="padding: 12px; border: 1px solid #e5e7eb;">${priceDisplay}</td>`
-                        html += `<td style="padding: 12px; border: 1px solid #e5e7eb;">`
-                        if (Array.isArray(tier.features)) {
-                            html += `<ul style="margin: 0; padding-left: 20px;">`
-                            tier.features.forEach((feature: string) => {
-                                html += `<li>${feature}</li>`
-                            })
-                            html += `</ul>`
-                        }
-                        html += `</td></tr>`
-                    })
+                if (selectedTier) {
+                    const priceDisplay = selectedTier.price === null
+                        ? "Custom"
+                        : `${currency} ${selectedTier.price} / ${selectedTier.priceUnit}`
+
+                    html += `<div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin: 20px 0;">`
+                    html += `<h4 style="margin: 0 0 8px 0; color: #111827;">${selectedTier.name}</h4>`
+                    html += `<p style="font-size: 24px; font-weight: bold; margin: 8px 0; color: #4f46e5;">${priceDisplay}</p>`
+
+                    if (selectedTier.description) {
+                        html += `<p style="color: #6b7280; margin: 8px 0;">${selectedTier.description}</p>`
+                    }
+
+                    if (Array.isArray(selectedTier.features) && selectedTier.features.length > 0) {
+                        html += `<h5 style="margin: 16px 0 8px 0; color: #374151;">Includes:</h5>`
+                        html += `<ul style="margin: 0; padding-left: 20px; color: #4b5563;">`
+                        selectedTier.features.forEach((feature: string) => {
+                            html += `<li style="margin: 4px 0;">${feature}</li>`
+                        })
+                        html += `</ul>`
+                    }
+                    html += `</div>`
+                } else {
+                    html += `<p>Please select a pricing tier for this product.</p>`
                 }
-                html += `</tbody></table>`
 
                 if (Array.isArray(data.addons) && data.addons.length > 0) {
-                    html += `<h4 style="margin-top: 20px;">Add-ons</h4>`
+                    html += `<h4 style="margin-top: 20px;">Available Add-ons</h4>`
                     html += `<ul>`
                     data.addons.forEach((addon: any) => {
                         html += `<li><strong>${addon.name}</strong>: ${currency} ${addon.price} / ${addon.priceUnit}</li>`
