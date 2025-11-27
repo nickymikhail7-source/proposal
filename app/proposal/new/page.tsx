@@ -25,6 +25,9 @@ export default function NewProposalPage() {
     useEffect(() => {
         if (selectedProductId) {
             const product = products.find(p => p.id === selectedProductId)
+            console.log('Selected product:', product)
+            console.log('Pricing data:', product?.pricingData)
+            console.log('Tiers:', product?.pricingData?.tiers)
             setSelectedProduct(product)
             setSelectedTierId("") // Reset tier selection when product changes
         } else {
