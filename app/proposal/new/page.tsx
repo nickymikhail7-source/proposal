@@ -180,31 +180,49 @@ export default function NewProposalPage() {
                                     ))}
                                 </select>
 
-                                {selectedProduct && selectedProduct.pricingData?.tiers && (
+                                {selectedProduct && (
                                     <div className="mt-4">
-                                        <label
-                                            htmlFor="tier"
-                                            className="block text-sm font-medium text-gray-700"
-                                        >
-                                            Select Pricing Tier *
-                                        </label>
-                                        <p className="text-xs text-gray-500 mb-2">
-                                            Choose which tier to include in the proposal.
-                                        </p>
-                                        <select
-                                            id="tier"
-                                            value={selectedTierId}
-                                            onChange={(e) => setSelectedTierId(e.target.value)}
-                                            required
-                                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                        >
-                                            <option value="">Select a tier...</option>
-                                            {selectedProduct.pricingData.tiers.map((tier: any) => (
-                                                <option key={tier.id} value={tier.id}>
-                                                    {tier.name} - {tier.price === null ? 'Custom' : `${selectedProduct.pricingData.currency || 'USD'} ${tier.price} / ${tier.priceUnit}`}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        <div className="text-sm text-gray-600 mb-2">
+                                            <strong>Debug Info:</strong>
+                                            <pre className="bg-gray-100 p-2 rounded text-xs overflow-auto">
+                                                {JSON.stringify({
+                                                    hasProduct: !!selectedProduct,
+                                                    hasPricingData: !!selectedProduct?.pricingData,
+                                                    hasTiers: !!selectedProduct?.pricingData?.tiers,
+                                                    tierCount: selectedProduct?.pricingData?.tiers?.length || 0
+                                                }, null, 2)}
+                                            </pre>
+                                        </div>
+
+                                        {selectedProduct.pricingData?.tiers && selectedProduct.pricingData.tiers.length > 0 ? (
+                                            <>
+                                                <label
+                                                    htmlFor="tier"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
+                                                    Select Pricing Tier *
+                                                </label>
+                                                <p className="text-xs text-gray-500 mb-2">
+                                                    Choose which tier to include in the proposal.
+                                                </p>
+                                                <select
+                                                    id="tier"
+                                                    value={selectedTierId}
+                                                    onChange={(e) => setSelectedTierId(e.target.value)}
+                                                    required
+                                                    className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                >
+                                                    <option value="">Select a tier...</option>
+                                                    {selectedProduct.pricingData.tiers.map((tier: any) => (
+                                                        <option key={tier.id} value={tier.id}>
+                                                            {tier.name} - {tier.price === null ? 'Custom' : `${selectedProduct.pricingData.currency || 'USD'} ${tier.price} / ${tier.priceUnit}`}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </>
+                                        ) : (
+                                            <p className="text-red-600 text-sm">No tiers found in pricing data</p>
+                                        )}
                                     </div>
                                 )}
                             </div>
